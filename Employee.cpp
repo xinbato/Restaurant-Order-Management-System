@@ -66,7 +66,7 @@ void Employee::placeOrder() {
 		cout << ">> Tong tien: " << total << " VND" << endl;
 	}
 }
-
+	
 
 void Employee::bookTable() {
 	cout << "=== Book Table ===" << endl;
@@ -74,5 +74,5 @@ void Employee::bookTable() {
 }
 
 void Employee::cancelOrder() {
-
+	
 }

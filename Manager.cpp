@@ -5,12 +5,12 @@
 #include <iostream>
 using namespace std;
 void Manager::manageEmployees() {
-
+	
 
 }
 
 void Manager::manageMenu() {
-
+	
 
 }
 
@@ -24,7 +24,7 @@ void Manager::manageOrders() {
 	while (getline(orderFile, line)) {
 		cout << "Don " << (orderCount + 1) << ": " << line << endl;
 		orderCount++;
-	}
+}
 	orderFile.close();
 	cout << "Tong so don: " << orderCount << endl;
 }
