@@ -10,8 +10,51 @@ using namespace std;
 
 
 void Employee::viewAndSearch() {
+    cout << "=== View and Search ===" << endl;
 
+    ifstream menuFile("D:/menu.txt");
+    if (!menuFile.is_open()) {
+        cout << "Cannot open menu file!" << endl;
+        return;
+    }
+
+    vector<string> items;
+    vector<double> prices;
+    string line;
+    while (getline(menuFile, line)) {
+        stringstream ss(line);
+        string name, priceStr;
+        getline(ss, name, ',');
+        getline(ss, priceStr, ',');
+        items.push_back(name);
+        prices.push_back(stod(priceStr));
+    }
+    menuFile.close();
+
+    cout << "\n--- All Items ---" << endl;
+    for (int i = 0; i < items.size(); ++i) {
+        cout << i + 1 << ". " << items[i] << " - " << prices[i] << " VND" << endl;
+    }
+
+    cout << "\nEnter keyword to search (press Enter to skip): ";
+    cin.ignore();
+    string keyword;
+    getline(cin, keyword);
+
+    if (!keyword.empty()) {
+        cout << "\n--- Search Results ---" << endl;
+        bool found = false;
+        for (int i = 0; i < items.size(); ++i) {
+            if (items[i].find(keyword) != string::npos) {
+                cout << items[i] << " - " << prices[i] << " VND" << endl;
+                found = true;
+            }
+        }
+        if (!found)
+            cout << "No results found.\n";
+    }
 }
+
 
 void Employee::placeOrder() {
 	cout << "=== Order ===" << endl;
@@ -75,4 +118,5 @@ void Employee::bookTable() {
 
 void Employee::cancelOrder() {
 	
+
 }
