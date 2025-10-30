@@ -1,4 +1,4 @@
-#include "Employee.h"
+﻿#include "Employee.h"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -17,7 +17,7 @@ void Employee::placeOrder() {
 	cout << "=== Order ===" << endl;
 	vector<string> items;
 	vector<double> prices;
-	ifstream menuFile("D:/menu.txt");
+	ifstream menuFile("menu.txt");//vị trí file menu
 	string line;
 	while (getline(menuFile, line)) {
 		stringstream ss(line);
@@ -58,7 +58,7 @@ void Employee::placeOrder() {
 		orderFile << total;
 		for (int i = 0; i < items.size(); ++i) {
 			if (quantity[i] > 0) {
-				orderFile << items[i] << "," << prices[i] << "," << quantity[i] << endl;
+				orderFile << items[i] << ", " << prices[i] << ", " << quantity[i] << endl;
 			}
 		}
 		orderFile << "\n";
@@ -70,7 +70,7 @@ void Employee::placeOrder() {
 
 void Employee::bookTable() {
 	cout << "=== Book Table ===" << endl;
-	// Implementation for booking a table
+	
 }
 
 void Employee::cancelOrder() {

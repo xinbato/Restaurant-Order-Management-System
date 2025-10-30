@@ -61,17 +61,18 @@ void interFaceEmployee(Display& display, Employee& employee) {
 
 
 int main() {
-	
-	Role role =	Mydisplay.login();
-	switch (role) {
-	case Role::MANAGER: {
-		interFaceManager(Mydisplay, manager);
+	do {
 		Role role = Mydisplay.login();
-	}
-	case Role::EMPLOYEE: {
-		interFaceEmployee(Mydisplay, employee);
-		Role role = Mydisplay.login();
-	}
-	}
+		switch (role) {
+		case Role::MANAGER: {
+			interFaceManager(Mydisplay, manager);
+			break;
+		}
+		case Role::EMPLOYEE: {
+			interFaceEmployee(Mydisplay, employee);
+			break;
+		}
+		}
+	} while (true);
 	return 0;
 }

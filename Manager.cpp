@@ -40,7 +40,11 @@ void Manager::generateReports() {
 		stringstream ss(line);
 		string priceStr;
 		getline(ss, priceStr, ',');
-		totalRevenue += stod(priceStr);
+		try {
+			totalRevenue += std::stod(priceStr);
+		}
+		catch (...) {
+		}
 		orderCount++;
 	}
 	orderFile.close();
