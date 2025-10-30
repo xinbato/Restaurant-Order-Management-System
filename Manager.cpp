@@ -4,30 +4,30 @@
 #include <sstream>
 #include <iostream>
 using namespace std;
-void Manager::manageEmployee() {
- cout << "=== Manage Employee ===" << endl;
- vector<vector<string>> employee;
+void Manager::manageEmployees() {
+ cout << "=== Manage Employees ===" << endl;
+ vector<vector<string>> employees;
 
- ifstream fileIn("data/employee.txt");
+ ifstream fileIn("data/employees.txt");
  string line;
  while (getline(fileIn, line)) {
   stringstream ss(line);
   vector<string> data;
   string field;
   while (getline(ss, field, ',')) data.push_back(field);
-  employee.push_back(data);
+  employees.push_back(data);
  }
  fileIn.close();
 
  int choice;
  do {
-  cout << "\n1. View Employee\n2. Add Employee\n3. Remove Employee\n0. Back\nChoice: ";
+  cout << "\n1. View Employees\n2. Add Employee\n3. Remove Employee\n0. Back\nChoice: ";
   cin >> choice;
   cin.ignore();
 
   if (choice == 1) {
    cout << "\n--- Employee List ---" << endl;
-   for (auto& emp : employee) {
+   for (auto& emp : employees) {
     if (emp.size() >= 3)
      cout << "ID: " << emp[0] << " | Name: " << emp[1] << " | Phone: " << emp[2] << endl;
    }
@@ -37,17 +37,17 @@ void Manager::manageEmployee() {
    cout << "Enter ID: "; getline(cin, id);
    cout << "Enter Name: "; getline(cin, name);
    cout << "Enter Phone: "; getline(cin, phone);
-   employee.push_back({ id, name, phone });
+   employees.push_back({ id, name, phone });
    cout << "Employee added successfully.\n";
   }
   else if (choice == 3) {
    string id;
    cout << "Enter ID to remove: ";
    getline(cin, id);
-   auto it = remove_if(employee.begin(), employee.end(),
+   auto it = remove_if(employees.begin(), employees.end(),
     [&](vector<string>& e) { return e[0] == id; });
-   if (it != employee.end()) {
-    employee.erase(it, employee.end());
+   if (it != employees.end()) {
+    employees.erase(it, employees.end());
     cout << "Removed.\n";
    }
    else cout << "Employee not found.\n";
@@ -55,13 +55,12 @@ void Manager::manageEmployee() {
 
  } while (choice != 0);
 
- ofstream fileOut("data/employee.txt");
- for (auto& emp : employee) {
+ ofstream fileOut("data/employees.txt");
+ for (auto& emp : employees) {
   fileOut << emp[0] << "," << emp[1] << "," << emp[2] << "\n";
  }
  fileOut.close();
 }
-
 
 void Manager::manageMenu() {
  cout << "=== Manage Menu ===" << endl;
@@ -166,4 +165,5 @@ void Manager::generateReports() {
 	cout << "Tong so don hang: " << orderCount << endl;
 	cout << "Tong doanh thu: " << totalRevenue << " VND" << endl;
 }
+
 
