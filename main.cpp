@@ -4,9 +4,9 @@
 #include "Employee.h"
 #include <iostream>
 using namespace std;
-	Display Mydisplay;
-	Manager manager; 
-	Employee employee; 
+Display Mydisplay;
+Manager manager;
+Employee employee;
 void interFaceManager(Display& display, Manager& manager) {
 	int choice = -1;
 	do {
@@ -31,7 +31,7 @@ void interFaceManager(Display& display, Manager& manager) {
 		}
 		}
 
-	}	while (choice != 0);
+	} while (choice != 0);
 }
 void interFaceEmployee(Display& display, Employee& employee) {
 	int choice = -1;
@@ -55,8 +55,12 @@ void interFaceEmployee(Display& display, Employee& employee) {
 			employee.cancelOrder();
 			break;
 		}
+		case 5: {
+			employee.cancelTable();
+			break;
 		}
-	}	while (choice != 0);
+		}
+	} while (choice != 0);
 }
 
 
