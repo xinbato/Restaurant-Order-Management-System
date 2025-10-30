@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <vector>
 using namespace std;
 void Manager::manageEmployees() {
  cout << "=== Manage Employees ===" << endl;
@@ -165,5 +166,6 @@ void Manager::generateReports() {
 	cout << "Tong so don hang: " << orderCount << endl;
 	cout << "Tong doanh thu: " << totalRevenue << " VND" << endl;
 }
+
 
 
