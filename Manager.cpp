@@ -9,7 +9,7 @@ void Manager::manageEmployees() {
  cout << "=== Manage Employees ===" << endl;
  vector<vector<string>> employees;
 
- ifstream fileIn("data/employees.txt");
+ ifstream fileIn("employees.txt");
  string line;
  while (getline(fileIn, line)) {
   stringstream ss(line);
@@ -56,7 +56,7 @@ void Manager::manageEmployees() {
 
  } while (choice != 0);
 
- ofstream fileOut("data/employees.txt");
+ ofstream fileOut("employees.txt");
  for (auto& emp : employees) {
   fileOut << emp[0] << "," << emp[1] << "," << emp[2] << "\n";
  }
@@ -68,7 +68,7 @@ void Manager::manageMenu() {
  vector<pair<string, double>> menu;
  string line;
 
- ifstream fileIn("data/menu.txt");
+ ifstream fileIn("menu.txt");
  while (getline(fileIn, line)) {
   stringstream ss(line);
   string name, priceStr;
@@ -122,7 +122,7 @@ void Manager::manageMenu() {
 
  } while (choice != 0);
 
- ofstream fileOut("D:/menu.txt");
+ ofstream fileOut("menu.txt");
  for (auto& m : menu)
   fileOut << m.first << "," << m.second << ",\n";
  fileOut.close();
@@ -149,7 +149,7 @@ void Manager::manageOrders() {
 void Manager::generateReports() {
 	cout << endl;
 	cout << "=== Generate Reports ===" << endl;
-	ifstream orderFile("D:/orders.txt");
+	ifstream orderFile("orders.txt");
 	string line;
 	double totalRevenue = 0.0;
 	int orderCount = 0;
@@ -168,6 +168,7 @@ void Manager::generateReports() {
 	cout << "Tong so don hang: " << orderCount << endl;
 	cout << "Tong doanh thu: " << totalRevenue << " VND" << endl;
 }
+
 
 
 
