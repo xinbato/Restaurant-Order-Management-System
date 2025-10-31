@@ -63,149 +63,201 @@ void Employee::placeOrder() {
 	ifstream menuFile("menu.txt");//vị trí file menu
 	string line;
 	while (getline(menuFile, line)) {
+		if (line.empty()) continue; 
 		stringstream ss(line);
 		string name, priceStr;
 		getline(ss, name, ',');
 		getline(ss, priceStr, ',');
-		double price = stod(priceStr);
-		items.push_back(name);
-		prices.push_back(price);
+		try { 
+			double price = stod(priceStr);
+			items.push_back(name);
+			prices.push_back(price);
+		}
+		catch (...) {
+			cout << "Warning: Bo qua mon '" << name << "' do dinh dang gia bi loi." << endl;
+		}
 	}
 	menuFile.close();
 	vector<int> quantity(items.size(), 0);
 	int choice = -1;
 	do {
-		cout << "=== MENU ===" << endl;
-		for (int i = 0; i < items.size(); i++) {
+		cout << "\n=== MENU ===" << endl;
+		for (size_t i = 0; i < items.size(); i++) { 
 			cout << setw(2) << (i + 1) << ". " << items[i] << " (" << prices[i] << " VND)" << " [Da chon: " << quantity[i] << "]" << endl;
 		}
-		cout << "0. xac nhan" << endl;
+		cout << "--------------------" << endl;
+		cout << "0. Xac nhan" << endl;
 		cout << "Chon mon an (1-" << items.size() << "): ";
-		cin >> choice;
-		if (choice >= 0 && choice <= items.size()) {
-			int idex = choice - 1;
-			cout << "So luong: ";
+
+		if (!(cin >> choice)) {
+			cout << "Loi: Vui long nhap mot SO." << endl;
+			cin.clear(); 
+			cin.ignore(std::numeric_limits<streamsize>::max(), '\n'); 
+			choice = -1; 
+			continue;  
+		}
+		if (choice == 0) {
+			break; 
+		}
+		if (choice > 0 && choice <= static_cast<int>(items.size())) {
+			int index = choice - 1; 
+			cout << "So luong cho " << items[index] << ": ";
 			int qty = 0;
-			cin >> qty;
-			if (idex >= 0 && idex < quantity.size()) {
-				quantity[idex] += qty;
+			if (!(cin >> qty)) {
+				cout << "Loi: So luong khong hop le." << endl;
+				cin.clear();
+				cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
+				continue; 
+			}
+			if (qty > 0) {
+				quantity[index] += qty;
+				cout << "-> Da them " << qty << " " << items[index] << "." << endl;
+			}
+			else {
+				cout << "-> So luong khong hop le. Khong them." << endl;
 			}
 		}
+		else {
+			cout << "Loi: Lua chon khong hop le. Vui long chon tu 0 den " << items.size() << "." << endl;
+		}
+
 	} while (choice != 0);
-	double total = 0.0;
-	for (int i = 0; i < items.size(); i++) {
+
+		double total = 0.0;
+	for (size_t i = 0; i < items.size(); i++) {
 		total += prices[i] * quantity[i];
 	}
 	if (total > 0) {
+		cout << "\n=== Xac nhan don hang ===" << endl;
 		ofstream orderFile("orders.txt", ios::app);
-		orderFile << total;
-		for (int i = 0; i < items.size(); ++i) {
+		orderFile << total; 
+		for (size_t i = 0; i < items.size(); ++i) {
 			if (quantity[i] > 0) {
-				orderFile << items[i] << ", " << prices[i] << ", " << quantity[i] << endl;
+				
+				orderFile << "," << items[i] << " x" << quantity[i];
 			}
 		}
 		orderFile << "\n";
 		orderFile.close();
+
+		cout << "Don hang da duoc ghi lai." << endl;
 		cout << ">> Tong tien: " << total << " VND" << endl;
+	}
+	else {
+		cout << "Don hang rong. Da huy." << endl;
 	}
 }
 	
 
 
 void Employee::bookTable() {
-	cout << "=== Book Table ===" << endl;
-
-	ifstream tableFile("table.txt");
-	if (!tableFile.is_open()) {
-		cout << "Cannot open table file!" << endl;
+	cout << "=== Book Table ===\n";
+	ifstream f("table.txt");
+	if (!f.is_open()) {
+		cout << "Cannot open tables file!\n";
 		return;
 	}
-
-	vector<int> tableNumbers;
-	vector<string> tableStatus;
-
-	string line;
-	while (getline(tableFile, line)) {
+	vector<string> num, status;
+	string a, b, line;
+	while (getline(f, line)) {
 		stringstream ss(line);
-		string numStr, status;
-		getline(ss, numStr, ',');
-		getline(ss, status, ',');
-
-		// Xóa khoảng trắng thừa
-		numStr.erase(0, numStr.find_first_not_of(" \t"));
-		numStr.erase(numStr.find_last_not_of(" \t") + 1);
-		status.erase(0, status.find_first_not_of(" \t"));
-		status.erase(status.find_last_not_of(" \t") + 1);
-
-		tableNumbers.push_back(stoi(numStr));
-		tableStatus.push_back(status);
+		getline(ss, a, ',');
+		getline(ss, b);
+		if (!b.empty() && b[0] == ' ') b.erase(0, 1);// xoá dấu cách dư
+		num.push_back(a);
+		status.push_back(b);
 	}
-	tableFile.close();
+	f.close();
+	cout << "Available Tables:\n";
+	bool any = false;
+	for (int i = 0; i < num.size(); i++)
+		if (status[i] == "Trong") {
+			cout << "Table " << num[i] << ", " << status[i] << '\n';
+			any = true;
+		}
 
-	cout << "\n--- Danh sách ban ---" << endl;
-	for (size_t i = 0; i < tableNumbers.size(); ++i) {
-		cout << setw(2) << tableNumbers[i] << ". " << tableStatus[i] << endl;
-	}
-
-	cout << "\nNhap so ban muon dat: ";
-	int tableChoice;
-	cin >> tableChoice;
-
-	if (tableChoice < 1 || tableChoice >(int)tableNumbers.size()) {
-		cout << "Số bàn không hợp lệ!\n";
+	if (!any) {
+		cout << "Không còn bàn trống!\n";
 		return;
 	}
-
-	if (tableStatus[tableChoice - 1] != "Trong") {
-		cout << "Bàn này đã được đặt rồi!\n";
+	cout << "Enter table number to book: ";
+	string t; cin >> t;
+	bool booked = false;
+	for (int i = 0; i < num.size(); i++) {
+		if (num[i] == t) {
+			if (status[i] == "Trong") {
+				status[i] = "Da dat";
+				booked = true;
+			}
+			break;
+		}
+	}
+	if (!booked) {
+		cout << "Invalid table number or table already booked!\n";
 		return;
 	}
-
-	// Đánh dấu bàn được đặt
-	tableStatus[tableChoice - 1] = "Da dat";
-
-	ofstream outFile("table.txt");
-	for (size_t i = 0; i < tableNumbers.size(); ++i) {
-		outFile << tableNumbers[i] << ", " << tableStatus[i] << endl;
-	}
-	outFile.close();
-
-	cout << ">> Ban " << tableChoice << " da duoc dat thanh cong!\n";
+	ofstream o("table.txt");
+	for (int i = 0; i < num.size(); i++)
+		o << num[i] << ", " << status[i] << '\n';
+	o.close();
+	cout << "Table " << t << " booked successfully!\n";
 }
 
 
 void Employee::cancelOrder() {
-	cout << "=== Cancel Order ===" << endl;
-	ifstream orderFile("orders.txt");
-	if (!orderFile.is_open()) {
-		cout << "Cannot open orders file!" << endl;
+	cout << "=== Cancel Order ===\n";
+	ifstream f("orders.txt");
+	if (!f.is_open()) {
+		cout << "Cannot open orders file!\n";
 		return;
 	}
-	string content((istreambuf_iterator<char>(orderFile)), (istreambuf_iterator<char>()));
-	orderFile.close();
-	ofstream tempFile("temp.txt");
-	cout << "Enter order details to cancel: ";
-	string orderDetails;
-	cin.ignore();
-	getline(cin, orderDetails);
-	size_t pos = content.find(orderDetails);
-	if (pos != string::npos) {
-		content.erase(pos, orderDetails.length());
-		tempFile << content;
-		tempFile.close();
-		remove("orders.txt");
-		rename("temp.txt", "orders.txt");
-		cout << "Order canceled successfully!" << endl;
+	vector<string> orders;
+	string line, current;
+	while (getline(f, line)) {
+		if (line.empty()) {
+			if (!current.empty()) {
+				orders.push_back(current);
+				current.clear();
+			}
+		}
+		else {
+			current += line + "\n";
+		}
 	}
-	else {
-		cout << "Order not found!" << endl;
-		tempFile.close();
-		remove("temp.txt");
+	if (!current.empty()) orders.push_back(current);
+	f.close();
+
+	if (orders.empty()) {
+		cout << "No orders found!\n";
+		return;
 	}
+	cout << "\n--- All Orders ---\n";
+	for (int i = 0; i < orders.size(); i++) {
+		cout << "Order #" << (i + 1) << ":\n" << orders[i] << '\n';
+		cout << "------------------------\n";
+	}
+	cout << "Enter order number to cancel (0 to exit): ";
+	int choice;
+	cin >> choice;
 
-
-
+	if (choice == 0) {
+		cout << "Canceled.\n";
+		return;
+	}
+	if (choice < 1 || choice > orders.size()) {
+		cout << "Invalid order number!\n";
+		return;
+	}
+	orders.erase(orders.begin() + (choice - 1));
+	ofstream o("orders.txt");
+	for (int i = 0; i < orders.size(); i++) {
+		o << orders[i] << "\n";
+	}
+	o.close();
+	cout << "Order #" << choice << " canceled successfully!\n";
 }
+
+
 void Employee::cancelTable() {
 	cout << "=== Cancel Table Booking ===\n";
 
@@ -266,4 +318,3 @@ void Employee::cancelTable() {
 
 	cout << "Table " << t << " booking canceled successfully!\n";
 }
-
