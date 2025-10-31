@@ -132,13 +132,15 @@ void Manager::manageMenu() {
 void Manager::manageOrders() {
 	cout << endl;
 	cout << "=== Manage Orders ===" << endl;
-	ifstream orderFile("D:/orders.txt");
+	ifstream orderFile("orders.txt");
 	string line;
 	int orderCount = 0;
-	cout << "cac don hang" << endl;
+	cout << "cac don hang: " << endl;
 	while (getline(orderFile, line)) {
-		cout << "Don " << (orderCount + 1) << ": " << line << endl;
-		orderCount++;
+		if (!line.empty()) {
+			orderCount++;
+			cout << "Don " << orderCount << ": " << line << endl;
+		}
 }
 	orderFile.close();
 	cout << "Tong so don: " << orderCount << endl;
@@ -166,6 +168,7 @@ void Manager::generateReports() {
 	cout << "Tong so don hang: " << orderCount << endl;
 	cout << "Tong doanh thu: " << totalRevenue << " VND" << endl;
 }
+
 
 
 
