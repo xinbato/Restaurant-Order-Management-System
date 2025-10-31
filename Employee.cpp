@@ -115,7 +115,7 @@ void Employee::placeOrder() {
 void Employee::bookTable() {
 	cout << "=== Book Table ===" << endl;
 
-	ifstream tableFile("D:/table.txt");
+	ifstream tableFile("table.txt");
 	if (!tableFile.is_open()) {
 		cout << "Cannot open table file!" << endl;
 		return;
@@ -164,7 +164,7 @@ void Employee::bookTable() {
 	// Đánh dấu bàn được đặt
 	tableStatus[tableChoice - 1] = "Da dat";
 
-	ofstream outFile("D:/table.txt");
+	ofstream outFile("table.txt");
 	for (size_t i = 0; i < tableNumbers.size(); ++i) {
 		outFile << tableNumbers[i] << ", " << tableStatus[i] << endl;
 	}
@@ -172,16 +172,18 @@ void Employee::bookTable() {
 
 	cout << ">> Ban " << tableChoice << " da duoc dat thanh cong!\n";
 }
+
+
 void Employee::cancelOrder() {
 	cout << "=== Cancel Order ===" << endl;
-	ifstream orderFile("D:/orders.txt");
+	ifstream orderFile("orders.txt");
 	if (!orderFile.is_open()) {
 		cout << "Cannot open orders file!" << endl;
 		return;
 	}
 	string content((istreambuf_iterator<char>(orderFile)), (istreambuf_iterator<char>()));
 	orderFile.close();
-	ofstream tempFile("D:/temp.txt");
+	ofstream tempFile("temp.txt");
 	cout << "Enter order details to cancel: ";
 	string orderDetails;
 	cin.ignore();
@@ -191,22 +193,76 @@ void Employee::cancelOrder() {
 		content.erase(pos, orderDetails.length());
 		tempFile << content;
 		tempFile.close();
-		remove("D:/orders.txt");
-		rename("D:/temp.txt", "D:/orders.txt");
+		remove("orders.txt");
+		rename("temp.txt", "orders.txt");
 		cout << "Order canceled successfully!" << endl;
 	}
 	else {
 		cout << "Order not found!" << endl;
 		tempFile.close();
-		remove("D:/temp.txt");
+		remove("temp.txt");
 	}
 
 
 
 }
+void Employee::cancelTable() {
+	cout << "=== Cancel Table Booking ===\n";
 
-void Employee::cancelTable()
-{
-	cout << "=== Cancel Table Booking ===" << endl;
+	ifstream f("table.txt");
+	if (!f.is_open()) {
+		cout << "Cannot open tables file!\n";
+		return;
+	}
 
+	vector<string> num, status;
+	string a, b, line;
+	while (getline(f, line)) {
+		stringstream ss(line);
+		getline(ss, a, ',');
+		getline(ss, b);
+		if (!b.empty() && b[0] == ' ') b.erase(0, 1);
+		num.push_back(a);
+		status.push_back(b);
+	}
+	f.close();
+
+	cout << "Booked Tables:\n";
+	bool any = false;
+	for (int i = 0; i < num.size(); i++)
+		if (status[i] == "Da dat") {
+			cout << "Table " << num[i] << '\n';
+			any = true;
+		}
+
+	if (!any) {
+		cout << "Không có bàn nào được đặt!\n";
+		return;
+	}
+
+	cout << "Enter table number to cancel booking: ";
+	string t; cin >> t;
+
+	bool found = false;
+	for (int i = 0; i < num.size(); i++) {
+		if (num[i] == t) {
+			if (status[i] == "Da dat") {
+				status[i] = "Trong";
+				found = true;
+			}
+			break;
+		}
+	}
+
+	if (!found) {
+		cout << "Invalid table number or table is not booked!\n";
+		return;
+	}
+
+	ofstream o("table.txt");
+	for (int i = 0; i < num.size(); i++)
+		o << num[i] << ", " << status[i] << '\n';
+	o.close();
+
+	cout << "Table " << t << " booking canceled successfully!\n";
 }
