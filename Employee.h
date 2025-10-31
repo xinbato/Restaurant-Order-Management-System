@@ -8,5 +8,5 @@ class Employee {
 	void placeOrder();
 	void viewAndSearch();
 	void cancelOrder();
-
+	void cancelTable();
 };

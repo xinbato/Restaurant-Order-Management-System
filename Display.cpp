@@ -42,4 +42,5 @@ void Display::menuEmployee() {
 	cout << "2. Book a table" << endl;
 	cout << "3. Create order" << endl;
 	cout << "4. Cancel order" << endl;
+	cout << "5. Cancel table booking" << endl;
 }

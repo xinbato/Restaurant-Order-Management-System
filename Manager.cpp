@@ -122,7 +122,7 @@ void Manager::manageMenu() {
 
  } while (choice != 0);
 
- ofstream fileOut("data/menu.txt");
+ ofstream fileOut("D:/menu.txt");
  for (auto& m : menu)
   fileOut << m.first << "," << m.second << ",\n";
  fileOut.close();
@@ -132,7 +132,7 @@ void Manager::manageMenu() {
 void Manager::manageOrders() {
 	cout << endl;
 	cout << "=== Manage Orders ===" << endl;
-	ifstream orderFile("orders.txt");
+	ifstream orderFile("D:/orders.txt");
 	string line;
 	int orderCount = 0;
 	cout << "cac don hang" << endl;
@@ -147,7 +147,7 @@ void Manager::manageOrders() {
 void Manager::generateReports() {
 	cout << endl;
 	cout << "=== Generate Reports ===" << endl;
-	ifstream orderFile("orders.txt");
+	ifstream orderFile("D:/orders.txt");
 	string line;
 	double totalRevenue = 0.0;
 	int orderCount = 0;
