@@ -12,7 +12,7 @@ using namespace std;
 void Employee::viewAndSearch() {
     cout << "=== View and Search ===" << endl;
 
-    ifstream menuFile("D:/menu.txt");
+    ifstream menuFile("menu.txt");
     if (!menuFile.is_open()) {
         cout << "Cannot open menu file!" << endl;
         return;
@@ -60,7 +60,7 @@ void Employee::placeOrder() {
 	cout << "=== Order ===" << endl;
 	vector<string> items;
 	vector<double> prices;
-	ifstream menuFile("D:/menu.txt");//vị trí file menu
+	ifstream menuFile("menu.txt");//vị trí file menu
 	string line;
 	while (getline(menuFile, line)) {
 		stringstream ss(line);
@@ -97,7 +97,7 @@ void Employee::placeOrder() {
 		total += prices[i] * quantity[i];
 	}
 	if (total > 0) {
-		ofstream orderFile("D:/orders.txt", ios::app);
+		ofstream orderFile("orders.txt", ios::app);
 		orderFile << total;
 		for (int i = 0; i < items.size(); ++i) {
 			if (quantity[i] > 0) {
@@ -266,3 +266,4 @@ void Employee::cancelTable() {
 
 	cout << "Table " << t << " booking canceled successfully!\n";
 }
+
