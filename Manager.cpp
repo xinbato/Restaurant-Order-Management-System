@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 using namespace std;
+
 void Manager::manageEmployees() {
  cout << "=== Manage Employees ===" << endl;
  vector<vector<string>> employees;
@@ -22,25 +23,44 @@ void Manager::manageEmployees() {
 
  int choice;
  do {
-  cout << "\n1. View Employees\n2. Add Employee\n3. Remove Employee\n0. Back\nChoice: ";
-  cin >> choice;
-  cin.ignore();
+     cout << "\n1. View Employees\n2. Add Employee\n3. Remove Employee\n0. Back\nChoice: ";
+     cin >> choice;
+     cin.ignore();
 
-  if (choice == 1) {
-   cout << "\n--- Employee List ---" << endl;
-   for (auto& emp : employees) {
-    if (emp.size() >= 3)
-     cout << "ID: " << emp[0] << " | Name: " << emp[1] << " | Phone: " << emp[2] << endl;
-   }
-  }
-  else if (choice == 2) {
-   string id, name, phone;
-   cout << "Enter ID: "; getline(cin, id);
-   cout << "Enter Name: "; getline(cin, name);
-   cout << "Enter Phone: "; getline(cin, phone);
-   employees.push_back({ id, name, phone });
-   cout << "Employee added successfully.\n";
-  }
+     if (choice == 1) {
+         cout << "\n--- Employee List ---" << endl;
+         for (auto& emp : employees) {
+             if (emp.size() >= 3)
+                 cout << "ID: " << emp[0] << " | Name: " << emp[1] << " | Phone: " << emp[2] << endl;
+         }
+     }
+     else if (choice == 2) {
+         string id, name, phone;
+         cout << "Enter ID: "; getline(cin, id);
+         //dieu chinh: da them kiem tra ID trung lap
+         while (true) {
+             bool isDuplicate = false;
+             for (const auto& emp : employees) {
+                 if (emp[0] == id) {
+                     isDuplicate = true;
+                     break;
+                 }
+             }
+
+             if (isDuplicate) {
+                 cout << "Loi: ID da ton tai. Vui long nhap ID khac.\n";
+                 cout << "Enter ID: "; getline(cin, id);
+             }
+             else {
+                 break;
+             }
+         }
+         cout << "Enter Name: "; getline(cin, name);
+         cout << "Enter Phone: "; getline(cin, phone);
+         employees.push_back({ id, name, phone });
+         cout << "Employee added successfully.\n";
+     }
+
   else if (choice == 3) {
    string id;
    cout << "Enter ID to remove: ";
@@ -89,17 +109,30 @@ void Manager::manageMenu() {
     cout << m.first << " - " << m.second << " VND" << endl;
   }
   else if (choice == 2) {
-   string name; double price;
-   cout << "Enter Dish Name: "; getline(cin, name);
-   cout << "Enter Price: "; cin >> price;
-   menu.push_back({ name, price });
-   cout << "Dish added.\n";
+      string name; double price;
+      cout << "Enter Dish Name: "; getline(cin, name);
+      // dieu chinh: da them kiem tra mon an trung lap
+      bool isDuplicate = false;
+      for (const auto& m : menu) {
+          if (m.first == name) {
+              isDuplicate = true;
+              break;
+          }
+      }
+      if (isDuplicate) {
+          cout << "Loi: Mon an da ton tai." << endl;
+      }
+      else {
+          cout << "Enter Price: "; cin >> price;
+          menu.push_back({ name, price });
+          cout << "Dish added.\n";
+      }
   }
-  else if (choice == 3) {
-   string name;
-   cout << "Enter Dish to Update: "; getline(cin, name);
-   bool found = false;
-   for (auto& m : menu) {
+   else if (choice == 3) {
+       string name;
+       cout << "Enter Dish to Update: "; getline(cin, name);
+       bool found = false;
+       for (auto& m : menu) {
     if (m.first == name) {
      cout << "New Price: "; cin >> m.second;
      found = true;

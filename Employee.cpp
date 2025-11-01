@@ -60,7 +60,7 @@ void Employee::placeOrder() {
 	cout << "=== Order ===" << endl;
 	vector<string> items;
 	vector<double> prices;
-	ifstream menuFile("menu.txt");//vị trí file menu
+	ifstream menuFile("menu.txt");
 	string line;
 	while (getline(menuFile, line)) {
 		if (line.empty()) continue; 
@@ -74,7 +74,7 @@ void Employee::placeOrder() {
 			prices.push_back(price);
 		}
 		catch (...) {
-			cout << "Warning: Bo qua mon '" << name << "' do dinh dang gia bi loi." << endl;
+			cout << "Warning: Bo qua mon do dinh dang gia bi loi." << endl;
 		}
 	}
 	menuFile.close();
@@ -85,7 +85,7 @@ void Employee::placeOrder() {
 		for (size_t i = 0; i < items.size(); i++) { 
 			cout << setw(2) << (i + 1) << ". " << items[i] << " (" << prices[i] << " VND)" << " [Da chon: " << quantity[i] << "]" << endl;
 		}
-		cout << "--------------------" << endl;
+		cout  << endl;
 		cout << "0. Xac nhan" << endl;
 		cout << "Chon mon an (1-" << items.size() << "): ";
 

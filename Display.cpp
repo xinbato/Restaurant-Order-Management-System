@@ -33,6 +33,7 @@ void Display::menuManager() {
 	cout << "2. Menu management" << endl;
 	cout << "3. Order management" << endl;
 	cout << "4. Reports" << endl;
+	cout << "\nChoice: ";
 }
 void Display::menuEmployee() {
 	cout << endl;
@@ -43,4 +44,5 @@ void Display::menuEmployee() {
 	cout << "3. Create order" << endl;
 	cout << "4. Cancel order" << endl;
 	cout << "5. Cancel table booking" << endl;
+	cout << "\nChoice: ";
 }
