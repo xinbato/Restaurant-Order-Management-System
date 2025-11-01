@@ -153,17 +153,25 @@ void Manager::generateReports() {
 	string line;
 	double totalRevenue = 0.0;
 	int orderCount = 0;
-	while (getline(orderFile, line)) {
-		stringstream ss(line);
-		string priceStr;
-		getline(ss, priceStr, ',');
-		try {
-			totalRevenue += std::stod(priceStr);
-		}
-		catch (...) {
-		}
-		orderCount++;
-	}
+	int lineCounter = 0;
+    while (getline(orderFile, line)) {
+        lineCounter++;
+        if (line.empty()) {
+            continue;
+        }
+        stringstream ss(line);
+        string priceStr;
+        getline(ss, priceStr, ',');
+
+        try {
+            totalRevenue += std::stod(priceStr);
+        }
+        catch (const exception& e) {
+            cout << "Warning: Could not parse revenue on line " << lineCounter
+                << ". Content: \"" << line << "\"" << endl;
+        }
+        orderCount++;
+    }
 	orderFile.close();
 	cout << "Tong so don hang: " << orderCount << endl;
 	cout << "Tong doanh thu: " << totalRevenue << " VND" << endl;
