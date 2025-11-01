@@ -60,7 +60,7 @@ void Employee::placeOrder() {
 	cout << "=== Order ===" << endl;
 	vector<string> items;
 	vector<double> prices;
-	ifstream menuFile("menu.txt");//vị trí file menu
+	ifstream menuFile("menu.txt");
 	string line;
 	while (getline(menuFile, line)) {
 		if (line.empty()) continue; 
@@ -74,7 +74,7 @@ void Employee::placeOrder() {
 			prices.push_back(price);
 		}
 		catch (...) {
-			cout << "Warning: Bo qua mon '" << name << "' do dinh dang gia bi loi." << endl;
+			cout << "Warning: Bo qua mon do dinh dang gia bi loi." << endl;
 		}
 	}
 	menuFile.close();
@@ -85,7 +85,7 @@ void Employee::placeOrder() {
 		for (size_t i = 0; i < items.size(); i++) { 
 			cout << setw(2) << (i + 1) << ". " << items[i] << " (" << prices[i] << " VND)" << " [Da chon: " << quantity[i] << "]" << endl;
 		}
-		cout << "--------------------" << endl;
+		cout  << endl;
 		cout << "0. Xac nhan" << endl;
 		cout << "Chon mon an (1-" << items.size() << "): ";
 
@@ -151,64 +151,56 @@ void Employee::placeOrder() {
 
 
 void Employee::bookTable() {
-	cout << "=== Book Table ===" << endl;
+    cout << "=== Book Table ===\n";
+    ifstream f("table.txt");
+    if (!f.is_open()) {
+        cout << "Cannot open tables file!\n";
+        return;
+    }
+    vector<string> num, status;
+    string a, b, line;
+    while (getline(f, line)) {
+        stringstream ss(line);
+        getline(ss, a, ',');
+        getline(ss, b);
+        if (!b.empty() && b[0] == ' ') b.erase(0, 1);// xoá dấu cách dư
+        num.push_back(a);
+        status.push_back(b);
+    }
+    f.close();
+    cout << "Available Tables:\n";
+    bool any = false;
+    for (int i = 0; i < num.size(); i++)
+        if (status[i] == "Trong") {
+            cout << "Table " << num[i] << ", " << status[i] << '\n';
+            any = true;
+        }
 
-	ifstream tableFile("table.txt");
-	if (!tableFile.is_open()) {
-		cout << "Cannot open table file!" << endl;
-		return;
-	}
-
-	vector<int> tableNumbers;
-	vector<string> tableStatus;
-
-	string line;
-	while (getline(tableFile, line)) {
-		stringstream ss(line);
-		string numStr, status;
-		getline(ss, numStr, ',');
-		getline(ss, status, ',');
-
-		// Xóa khoảng trắng thừa
-		numStr.erase(0, numStr.find_first_not_of(" \t"));
-		numStr.erase(numStr.find_last_not_of(" \t") + 1);
-		status.erase(0, status.find_first_not_of(" \t"));
-		status.erase(status.find_last_not_of(" \t") + 1);
-
-		tableNumbers.push_back(stoi(numStr));
-		tableStatus.push_back(status);
-	}
-	tableFile.close();
-
-	cout << "\n--- Danh sách ban ---" << endl;
-	for (size_t i = 0; i < tableNumbers.size(); ++i) {
-		cout << setw(2) << tableNumbers[i] << ". " << tableStatus[i] << endl;
-	}
-
-	cout << "\nNhap so ban muon dat: ";
-	int tableChoice;
-	cin >> tableChoice;
-
-	if (tableChoice < 1 || tableChoice >(int)tableNumbers.size()) {
-		cout << "Số bàn không hợp lệ!\n";
-		return;
-	}
-
-	if (tableStatus[tableChoice - 1] != "Trong") {
-		cout << "Bàn này đã được đặt rồi!\n";
-		return;
-	}
-
-	// Đánh dấu bàn được đặt
-	tableStatus[tableChoice - 1] = "Da dat";
-
-	ofstream outFile("table.txt");
-	for (size_t i = 0; i < tableNumbers.size(); ++i) {
-		outFile << tableNumbers[i] << ", " << tableStatus[i] << endl;
-	}
-	outFile.close();
-
-	cout << ">> Ban " << tableChoice << " da duoc dat thanh cong!\n";
+    if (!any) {
+        cout << "Không còn bàn trống!\n";
+        return;
+    }
+    cout << "Enter table number to book: ";
+    string t; cin >> t;
+    bool booked = false;
+    for (int i = 0; i < num.size(); i++) {
+        if (num[i] == t) {
+            if (status[i] == "Trong") {
+                status[i] = "Da dat";
+                booked = true;
+            }
+            break;
+        }
+    }
+    if (!booked) {
+        cout << "Invalid table number or table already booked!\n";
+        return;
+    }
+    ofstream o("table.txt");
+    for (int i = 0; i < num.size(); i++)
+        o << num[i] << ", " << status[i] << '\n';
+    o.close();
+    cout << "Table " << t << " booked successfully!\n";
 }
 
 
@@ -325,4 +317,5 @@ void Employee::cancelTable() {
 	o.close();
 
 	cout << "Table " << t << " booking canceled successfully!\n";
+
 }
