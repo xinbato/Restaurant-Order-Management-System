@@ -75,7 +75,7 @@ void Employee::placeOrder() {
 			prices.push_back(price);
 		}
 		catch (...) {
-			cout << "Warning: Bo qua mon do dinh dang gia bi loi." << endl;
+			cout << "Warning" << endl;
 		}
 	}
 	menuFile.close();
@@ -87,11 +87,11 @@ void Employee::placeOrder() {
 			cout << setw(2) << (i + 1) << ". " << items[i] << " (" << prices[i] << " VND)" << " [Da chon: " << quantity[i] << "]" << endl;
 		}
 		cout  << endl;
-		cout << "0. Xac nhan" << endl;
-		cout << "Chon mon an (1-" << items.size() << "): ";
+		cout << "0. Confirm" << endl;
+		cout << "Choose a dish (1-" << items.size() << "): ";
 
 		if (!(cin >> choice)) {
-			cout << "Loi: Vui long nhap mot SO." << endl;
+			cout << "Error: Please enter a NUMBER." << endl;
 			cin.clear(); 
 			cin.ignore(std::numeric_limits<streamsize>::max(), '\n'); 
 			choice = -1; 
@@ -102,24 +102,24 @@ void Employee::placeOrder() {
 		}
 		if (choice > 0 && choice <= static_cast<int>(items.size())) {
 			int index = choice - 1; 
-			cout << "So luong cho " << items[index] << ": ";
+			cout << "Quantity for " << items[index] << ": ";
 			int qty = 0;
 			if (!(cin >> qty)) {
-				cout << "Loi: So luong khong hop le." << endl;
+				cout << "Error: Invalid selection." << endl;
 				cin.clear();
 				cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
 				continue; 
 			}
 			if (qty > 0) {
 				quantity[index] += qty;
-				cout << "-> Da them " << qty << " " << items[index] << "." << endl;
+				cout << "-> Added " << qty << " " << items[index] << "." << endl;
 			}
 			else {
-				cout << "-> So luong khong hop le. Khong them." << endl;
+				cout << "-> Error: Invalid selection." << endl;
 			}
 		}
 		else {
-			cout << "Loi: Lua chon khong hop le. Vui long chon tu 0 den " << items.size() << "." << endl;
+			cout << "Error: Invalid selection." << endl;
 		}
 
 	} while (choice != 0);
@@ -129,7 +129,7 @@ void Employee::placeOrder() {
 		total += prices[i] * quantity[i];
 	}
 	if (total > 0) {
-		cout << "\n=== Xac nhan don hang ===" << endl;
+		cout << "\n=== Confirm Order ===" << endl;
 		ofstream orderFile("orders.txt", ios::app);
 		orderFile << total; 
 		for (size_t i = 0; i < items.size(); ++i) {
@@ -141,11 +141,11 @@ void Employee::placeOrder() {
 		orderFile << "\n";
 		orderFile.close();
 
-		cout << "Don hang da duoc ghi lai." << endl;
-		cout << ">> Tong tien: " << total << " VND" << endl;
+		cout << "Order has been recorded." << endl;
+		cout << ">> Total amount: " << total << " VND" << endl;
 	}
 	else {
-		cout << "Don hang rong. Da huy." << endl;
+		cout << "Order is empty. Cancelled." << endl;
 	}
 }
 	
@@ -178,7 +178,7 @@ void Employee::bookTable() {
         }
 
     if (!any) {
-        cout << "Không còn bàn trống!\n";
+        cout << "No available tables\n";
         return;
     }
     cout << "Enter table number to book: ";
@@ -289,7 +289,7 @@ void Employee::cancelTable() {
 		}
 
 	if (!any) {
-		cout << "Không có bàn nào được đặt!\n";
+		cout << "No table reserved\n";
 		return;
 	}
 
