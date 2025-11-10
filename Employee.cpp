@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iomanip>
 #include <map>
+#include <limits>
 using namespace std;
 
 
@@ -319,3 +320,4 @@ void Employee::cancelTable() {
 	cout << "Table " << t << " booking canceled successfully!\n";
 
 }
+
