@@ -4,6 +4,7 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
+#include <limits>
 using namespace std;
 
 void Manager::manageEmployees() {
@@ -209,6 +210,7 @@ void Manager::generateReports() {
 	cout << "Tong so don hang: " << orderCount << endl;
 	cout << "Tong doanh thu: " << totalRevenue << " VND" << endl;
 }
+
 
 
 
