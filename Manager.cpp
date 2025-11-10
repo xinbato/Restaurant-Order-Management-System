@@ -49,7 +49,7 @@ void Manager::manageEmployees() {
              }
 
              if (isDuplicate) {
-                 cout << "Loi: ID da ton tai. Vui long nhap ID khac.\n";
+                 cout << "Error:ID already exists, enter another ID\n";
                  cout << "Enter ID: "; getline(cin, id);
              }
              else {
@@ -121,7 +121,7 @@ void Manager::manageMenu() {
           }
       }
       if (isDuplicate) {
-          cout << "Loi: Mon an da ton tai." << endl;
+          cout << "Error: Dish already exists, import another dish." << endl;
       }
       else {
           cout << "Enter Price: "; cin >> price;
@@ -169,15 +169,14 @@ void Manager::manageOrders() {
 	ifstream orderFile("orders.txt");
 	string line;
 	int orderCount = 0;
-	cout << "cac don hang: " << endl;
 	while (getline(orderFile, line)) {
 		if (!line.empty()) {
 			orderCount++;
-			cout << "Don " << orderCount << ": " << line << endl;
+			cout << "Order " << orderCount << ": " << line << endl;
 		}
-}
+	}
 	orderFile.close();
-	cout << "Tong so don: " << orderCount << endl;
+	cout << "Total orders: " << orderCount << endl;
 }
 
 void Manager::generateReports() {
@@ -207,8 +206,8 @@ void Manager::generateReports() {
         orderCount++;
     }
 	orderFile.close();
-	cout << "Tong so don hang: " << orderCount << endl;
-	cout << "Tong doanh thu: " << totalRevenue << " VND" << endl;
+	cout << "Total orders: " << orderCount << endl;
+	cout << "Total revenue: " << totalRevenue << " VND" << endl;
 }
 
 
