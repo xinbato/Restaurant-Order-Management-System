@@ -1,6 +1,6 @@
-Bun Bo,50000
-Pho Bo,45000
-Goi Cuon,30000
-Com Ga,40000
-Tra Da,5000
-Coca Cola,15000
+bun bo,45000,
+pho,45000,
+com tam,30000,
+sting,12000,
+redbull,15000,
+tra da,5000,
