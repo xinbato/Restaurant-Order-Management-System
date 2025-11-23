@@ -1,6 +1,7 @@
 bun bo,45000,
 pho,45000,
 com tam,30000,
-sting,12000,
+sting,10000,
 redbull,15000,
 tra da,5000,
+
